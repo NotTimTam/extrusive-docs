@@ -897,11 +897,6 @@ body article.content {
   max-width: 896px;
   margin: 0 auto;
 }
-@media (max-width: 768px) {
-  body article.content {
-    overflow-x: auto;
-  }
-}
 @media (max-width: 1535px) {
   body article.content {
     margin-right: 100%;
@@ -1177,6 +1172,12 @@ body article.content div.article-inner table {
   width: max-content;
   max-width: 100%;
   overflow: auto;
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+  body article.content div.article-inner table {
+    overflow-x: auto;
+  }
 }
 body article.content div.article-inner table img {
   background-color: transparent;
