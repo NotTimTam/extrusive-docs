@@ -7,7 +7,7 @@
 <h3 style="text-align: center;">Open-source <ion-icon name="logo-markdown" style="display: inline-block; vertical-align: bottom;"></ion-icon>-based documentation for the 🌎!</h3>
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem; width: 100%;">
-<button class="input-button em" onclick="handleRequestFile('/content/Get%20Started/QUICK%20START.html')">Get Started</button>
+<button class="input-button em" onclick="handleRequestFile('/content/Get%20Started/Quick%20Start.html')">Get Started</button>
 <button class="input-button" onclick="window.open('https://github.com/NotTimTam/extrusive.md', '_blank');"><ion-icon name="logo-github"></ion-icon> Repository</button>
 </div>
 </div>
@@ -24,4 +24,4 @@
 
 <h3 style="text-align: center; margin-top: 0;"><b>extrusive.md</b> fills the niche that none of these do.</h3>
 
-<button class="input-button em" onclick="handleRequestFile('/content/More%20Info/FEATURES.html')" style="margin: 1rem auto !important;">Explore Features</button>
+<button class="input-button em" onclick="handleRequestFile('/content/More%20Info/Features.html')" style="margin: 1rem auto !important;">Explore Features</button>

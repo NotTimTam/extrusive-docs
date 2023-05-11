@@ -188,7 +188,7 @@ function createFileButton(name, path, nestLevel) {
 		path.split("/").join("_").split(" ").join("S20S").split(".")[0]
 	}">
 	<ion-icon name="document-outline"></ion-icon>
-	${name.split(".")[0]}
+	<p>${name.split(".html")[0]}</p>
 </button>
 `;
 }
@@ -257,7 +257,7 @@ function recurseDisplayFolderTree(data, html = "", nestLevel = 0) {
 					  }px" onclick="toggleNavDropdown('${name}-${nestLevel}')">
 					<div class="title">
 						<ion-icon name="folder-outline"></ion-icon>
-						${name}
+						<span>${name}</span>
 					</div>
 
 					<ion-icon id="arrow" name="chevron-down-outline"></ion-icon>
@@ -368,7 +368,7 @@ function createInnerNavStructure(data) {
 		const innerNav = document.querySelector("aside.inner-nav");
 		innerNav.innerHTML = `
 		<p class="head">On This Page</p>`;
-		
+
 		const headingRegex =
 			/<h[1-6][^>]*?(?:id="([^"]*)")[^>]*?>(.*?)<\/h[1-6]>/gi;
 		const matches = data.match(headingRegex);
@@ -380,7 +380,6 @@ function createInnerNavStructure(data) {
 			const id = match.split('"')[1];
 			const headingNum = +match.split("h")[1][0];
 			const element = `h${headingNum}`;
-			const content = match.split(">")[1];
 
 			const elementQuery = `${element}#${id}`;
 
@@ -411,7 +410,9 @@ function createInnerNavStructure(data) {
 
 			innerNav.innerHTML += `<${element} target="${element}#${id}" style="padding-left: ${
 				8 + 16 * (headingNum - 1)
-			}px;" onclick="handleScroll('${elementQuery}')">${content}`;
+			}px;" onclick="handleScroll('${elementQuery}')">${
+				realElement.innerText
+			}</${element}>`;
 		}
 
 		determineInnerNavPos();
