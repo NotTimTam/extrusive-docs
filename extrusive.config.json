@@ -1,0 +1,13 @@
+{
+	"title": "extrusive.md docs",
+	"author": "NotTimTam",
+	"description": "An open-source tool for building self-hosted documentation websites.",
+	"favicon": "./public/favicon.svg",
+	"styles": ["/styles/custom.css"],
+	"copyright": "extrusive.md documentation is open-source!",
+	"logo": {
+		"type": "text",
+		"data": "<ion-icon name=\"terminal\" size=\"large\"></ion-icon><b class='desktop-only'>extrusive.md</b>"
+	},
+	"disableFooter": "false"
+}
