@@ -79,7 +79,7 @@ The public directory is compiled with static builds and the client of dynamic bu
 
 This directory is similar to the public directory, but should contain any extra custom CSS files you wish to have on the clientside.
 
-<a href="" onclick="handleRequestFile('/content/Get%20Started/QUICK%20START.html');">
+<a href="" onclick="handleRequestFile('/content/Get%20Started/Setting%20up%20extrusive.config.json.html');">
 These files must be imported through your <code>extrusive.config.json</code>
 </a>
 <br/>
