@@ -1,22 +1,11 @@
 /**
- * Normalize a route path.
- * @param {string} path - The path to normalize.
- * @returns A normalized path.
- */
-const normalizePath = (path) =>
-	(path.includes("content")
-		? `/content${path.split("content")[1]}`
-		: "/"
-	).replace(/%20/g, " ");
-
-/**
  * Trigger the page to scroll back to where it was.
  * @param {string} hash - The portion of the page to scroll to.
  * @param {string} location - The last location of the page before the route change.
  */
-function triggerRescroll(hash, location) {
+function triggerRescroll(hash, search) {
 	try {
-		if (hash && location === window.location.pathname) {
+		if (hash && search === window.location.search) {
 			setTimeout(() => {
 				window.location.hash = hash;
 
@@ -27,6 +16,17 @@ function triggerRescroll(hash, location) {
 	} catch (err) {
 		console.error("Failed rescroll.", err);
 	}
+}
+
+/**
+ * Gets the current location.search and grabs the document field.
+ * @returns {string} A path to the requested document.
+ */
+function getDocumentQuery() {
+	return (
+		window.location.search &&
+		window.location.search.split("document=")[1].replace(/%20/g, " ")
+	);
 }
 
 /**
@@ -42,8 +42,8 @@ function renderArticle(data, path) {
 
 	// Update the url.
 	const hash = window.location.hash;
-	const location = window.location.pathname;
-	history.pushState(null, null, window.location.origin + path);
+	const search = window.location.search;
+	history.pushState(null, null, `?document=${path}`);
 
 	// Update the page content.
 	updatePageContent(data);
@@ -52,35 +52,19 @@ function renderArticle(data, path) {
 	createInnerNavStructure(data);
 
 	// If there was an inter-page link, route to it.
-	triggerRescroll(hash, location);
+	triggerRescroll(hash, search);
 }
 
 /**
- * Request a file by path.
- * @param {string} path - The path to the file that is being requested.
+ * Normalize a route path.
+ * @param {string} path - The path to normalize.
+ * @returns A normalized path.
  */
-const handleRequestFile = async (path) => {
-	// Trigger loading element.
-	triggerLoadingArticleContent();
-
-	path = normalizePath(path);
-
-	try {
-		const { data } = await axios.get("/api/v1/markdown", {
-			params: { path },
-		});
-
-		renderArticle(data, path);
-		indicateSelectedNav(path);
-	} catch (err) {
-		console.error(err);
-
-		createPopup(err.response.data, "error");
-		if (path !== "/content/README.html") {
-			handleRequestFile("/content/README.html");
-		}
-	}
-};
+const normalizePath = (path) =>
+	(path.includes("content")
+		? `/content${path.split("content")[1]}`
+		: "/"
+	).replace(/%20/g, " ");
 
 /**
  * indicate which nav elements are active.
@@ -134,7 +118,35 @@ function indicateSelectedNav(path) {
 	}
 }
 
-let cancelSearch;
+/**
+ * Request a file by path.
+ * @param {string} path - The path to the file that is being requested.
+ */
+const handleRequestFile = async (path) => {
+	// Trigger loading element.
+	triggerLoadingArticleContent();
+
+	try {
+		const normalizedPath = normalizePath(path);
+		const data = content[normalizedPath]
+			.replace(/&#39;/g, "'")
+			.replace(/&quot;/g, '"')
+			.replace(/&gt;/g, ">")
+			.replace(/&lt;/g, "<")
+			.replace(/&amp;/g, "&");
+
+		renderArticle(data, normalizedPath);
+		indicateSelectedNav(normalizedPath);
+	} catch (err) {
+		console.error(err);
+
+		createPopup("Could not load that document.", "error");
+		if (path !== "/content/README.html") {
+			handleRequestFile("/content/README.html");
+		}
+	}
+};
+
 /**
  * Search files for info.
  * @param {Event} e - The input element's event for oninput.
@@ -143,13 +155,13 @@ const handleSearchFiles = async (e) => {
 	try {
 		const { value: query } = e.target;
 
-		cancelSearch && cancelSearch();
-		const { data } = await axios.get(`/api/v1/markdown/search`, {
-			params: { query },
-			cancelToken: new axios.CancelToken((canceler) => {
-				cancelSearch = canceler;
-			}),
-		});
+		const data = searchIndices
+			.filter(
+				({ path, data }) =>
+					path.toLowerCase().includes(query.toLowerCase()) ||
+					data.includes(query.toLowerCase())
+			)
+			.map(({ path }) => path);
 
 		displaySearchResults(data);
 	} catch (err) {
@@ -158,7 +170,10 @@ const handleSearchFiles = async (e) => {
 };
 
 window.onload = () => {
-	if (window.location.pathname === "/")
-		handleRequestFile("/content/README.html");
-	else handleRequestFile(window.location.pathname);
+	const query = getDocumentQuery();
+
+	if (query) return handleRequestFile(query);
+
+	const normalizedPath = normalizePath(window.location.pathname);
+	if (normalizedPath === "/") handleRequestFile("/content/README.html");
 };
