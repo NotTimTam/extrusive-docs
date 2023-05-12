@@ -46,6 +46,10 @@ Check out my other article: [other-article](!/content/Other%20Folder/Other%20Fil
 
 Including `/content` at the start of the path, and `.html` at the end works best, but links will work without them. (e.g., `(!/Other%20Folder/Other%20File)`)
 
+## Code highlighting
+
+<a href="https://highlightjs.org/" target="_blank" rel="noreferrer noopener">highlight.js</a> automatically highlights your code, making it pretty and easier to read!
+
 ## Document searching
 
 **extrusive.md** comes packed with a built-in powerful search bar that remembers user's searches.
