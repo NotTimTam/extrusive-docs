@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"scripts": {
-		"build": "npx extrusive build --static --output-directory ./docs"
+		"build": "npx extrusive build --force --static --output-directory ./docs"
 	},
 	"repository": {
 		"type": "git",

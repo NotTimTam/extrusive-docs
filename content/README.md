@@ -15,7 +15,6 @@
 ---
 
 <p style="text-align: center; margin-bottom: 8rem;"><a href="https://obsidian.md/" target="_blank" rel="noreferrer noopener">Obsidian</a> is an <b>"extrusive"</b> rock, which means it is made from magma that erupted out of a volcano.
-
 </p>
 
 <p style="text-align: center;">
